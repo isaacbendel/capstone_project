@@ -3,5 +3,3 @@ showImage<-function(x, palette, label = ''){
 }
 
 
-knitr::spin('knn.R')
-beepr::beep(8)
