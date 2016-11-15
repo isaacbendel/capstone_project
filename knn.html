@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title>k Nearest Neighbour</title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<h1>k Nearest Neighbour</h1>
+
+<h1>Preparation</h1>
+
+<h2>Load Data, and separate into train and test sets</h2>
+
+<pre><code class="r">hand &lt;-read.csv(&#39;train.csv&#39;)
+train&lt;-hand[1:30000,]
+test&lt;-hand[30001:42000,]
+</code></pre>
+
+<h1>Run a k-Nearest Neighbour classification</h1>
+
+<pre><code class="r">tm1 &lt;- system.time(
+  {
+    a&lt;-knn(train[1:1000,2:785], test[,2:785], train[1:1000,1])    
+  })
+</code></pre>
+
+<h1>Result</h1>
+
+<h2>Time to run</h2>
+
+<pre><code class="r">tm1
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  86.500   0.192  86.531
+</code></pre>
+
+<h2>Confusion Matrix</h2>
+
+<pre><code class="r">confusionMatrix(test[,1],a)
+</code></pre>
+
+<pre><code>## [1] &quot;Accuracy is  0.876048152760482&quot;
+</code></pre>
+
+<table class="table table-condensed">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> True Value </th>
+   <th style="text-align:right;"> 0 </th>
+   <th style="text-align:right;"> 1 </th>
+   <th style="text-align:right;"> 2 </th>
+   <th style="text-align:right;"> 3 </th>
+   <th style="text-align:right;"> 4 </th>
+   <th style="text-align:right;"> 5 </th>
+   <th style="text-align:right;"> 6 </th>
+   <th style="text-align:right;"> 7 </th>
+   <th style="text-align:right;"> 8 </th>
+   <th style="text-align:right;"> 9 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #2020ff">1167</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">4</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">11</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">4</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #0000ff">1340</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">4</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f9f9ff">31</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f7f7ff">41</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4141ff">995</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">17</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">8</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">7</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f8f8ff">34</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">15</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">6</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">4</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">21</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f9f9ff">29</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #3535ff">1059</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f2f2ff">68</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">9</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">20</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f9f9ff">28</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">19</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f8f8ff">35</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5353ff">901</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">15</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">21</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #e0e0ff">162</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">12</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">12</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f6f6ff">44</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">5</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5151ff">911</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">19</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">5</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f7f7ff">39</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f9f9ff">29</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fafaff">23</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">8</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">8</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">4</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #2b2bff">1113</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">5</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f8f8ff">32</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">15</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">12</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #2424ff">1147</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f4f4ff">56</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">6</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f3f3ff">59</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">12</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f3f3ff">61</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">11</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f4f4ff">56</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">12</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">4</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5151ff">912</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f7f7ff">41</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">10</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">13</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">9</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #efefff">84</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">10</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f1f1ff">70</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">6</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #3f3fff">1007</span> </td>
+  </tr>
+</tbody>
+</table>
+
+<h1>Analysis</h1>
+
+<p>I tried running the knn on the entire train and test set. I was taking a long time. I tried with only 1000 from training set. It took about 2 minutes. k-means took only a few seconds to process the entire train and test set. This result was found using the default value of k = 1. We can now try playing with value of k, as well as considering greater slice of training set.</p>
+
+<h1>Round 2</h1>
+
+<pre><code class="r">tm1 &lt;- system.time(
+  {
+    a&lt;-knn(train[1:1000,2:785], test[,2:785], train[1:1000,1], k = 5)
+  })
+</code></pre>
+
+<h2>Time to run</h2>
+
+<pre><code class="r">tm1
+</code></pre>
+
+<pre><code>##    user  system elapsed 
+##  86.396   0.260  86.483
+</code></pre>
+
+<h2>Confusion Matrix</h2>
+
+<pre><code class="r">confusionMatrix(test[,1],a)
+</code></pre>
+
+<pre><code>## [1] &quot;Accuracy is  0.875051888750519&quot;
+</code></pre>
+
+<table class="table table-condensed">
+ <thead>
+  <tr>
+   <th style="text-align:right;"> True Value </th>
+   <th style="text-align:right;"> 0 </th>
+   <th style="text-align:right;"> 1 </th>
+   <th style="text-align:right;"> 2 </th>
+   <th style="text-align:right;"> 3 </th>
+   <th style="text-align:right;"> 4 </th>
+   <th style="text-align:right;"> 5 </th>
+   <th style="text-align:right;"> 6 </th>
+   <th style="text-align:right;"> 7 </th>
+   <th style="text-align:right;"> 8 </th>
+   <th style="text-align:right;"> 9 </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:right;"> 0 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #2121ff">1169</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">4</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">15</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 1 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #0000ff">1345</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 2 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f8f8ff">32</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f2f2ff">66</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #4848ff">960</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">15</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">11</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">11</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f8f8ff">33</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">18</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">9</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 3 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">10</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f8f8ff">33</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">16</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #3232ff">1078</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f6f6ff">46</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">9</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">19</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">20</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f9f9ff">27</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 4 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f5f5ff">51</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5656ff">888</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">9</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">20</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #dfdfff">167</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 5 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">16</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f9f9ff">28</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f7f7ff">41</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">7</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5454ff">898</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fafaff">22</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">7</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">18</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f7f7ff">39</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 6 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">18</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">12</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">7</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">5</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #2a2aff">1121</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 7 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f6f6ff">44</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">5</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">7</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #2222ff">1162</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ffffff">0</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f6f6ff">47</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 8 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">16</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #ececff">100</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">5</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f4f4ff">56</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">7</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f6f6ff">45</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">13</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">6</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #5858ff">879</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f6f6ff">47</span> </td>
+  </tr>
+  <tr>
+   <td style="text-align:right;"> 9 </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fcfcff">11</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fbfbff">18</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">5</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fdfdff">10</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f6f6ff">45</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">3</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">2</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #f0f0ff">78</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #fefeff">1</span> </td>
+   <td style="text-align:right;"> <span style="display: block; padding: 0 4px; border-radius: 4px; background-color: #3939ff">1040</span> </td>
+  </tr>
+</tbody>
+</table>
+
+<h1>Analysis</h1>
+
+<p>The accuracy actually decreased slightly by using k = 5.</p>
+
+<h1>Round 3</h1>
+
+<p>Until now I just took the first 1000 images from the test set. Now I&#39;ll try randomly selecting 100 of each image.</p>
+
+<pre><code class="r">digits = list()
+for (i in seq(1,10)){
+  digits[[i]] &lt;- train[which(train$label == i%%10),]
+}
+
+set.seed(20)
+randomList&lt;-sample(1:2700,100)
+
+newDigits&lt;-data.frame()
+for (i in seq(1,10)){
+  newDigits&lt;-rbind.data.frame(newDigits,digits[[i]][randomList,1:785])
+}
+
+accuracy&lt;-vector()
+for (i in seq(1, 21, 2)){
+  tm1 &lt;- system.time(
+  {
+    a &lt;-knn(newDigits[,2:785], test[,2:785], newDigits[,1], k = i)
+  })
+  print(c(i,tm1[3]))
+  accuracy&lt;-c(accuracy, confusionMatrix(test[,1], a, justAccuracy = TRUE))
+}
+</code></pre>
+
+<pre><code>##         elapsed 
+##    1.00   86.16 
+##         elapsed 
+##   3.000  86.365 
+##         elapsed 
+##   5.000  86.165 
+##         elapsed 
+##   7.000  86.136 
+##         elapsed 
+##   9.000  86.255 
+##         elapsed 
+##  11.000  86.194 
+##         elapsed 
+##  13.000  86.265 
+##         elapsed 
+##  15.000  86.287 
+##         elapsed 
+##  17.000  86.287 
+##         elapsed 
+##  19.000  86.249 
+##         elapsed 
+##  21.000  86.156
+</code></pre>
+
+<pre><code class="r">q&lt;- cbind.data.frame(seq(1,21,2), accuracy)
+names(q) &lt;- c(&#39;k&#39;, &#39;Accuracy&#39;)
+ggplot(data = q, aes(x = k, y = Accuracy)) + geom_line() + geom_point()
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk echo+TRUE"/></p>
+
+<p>It&#39;s fascinating that the accuracy goes down as we consider more neighbours.</p>
+
+<h1>Round 4</h1>
+
+<p>Now try 200 from each digit.</p>
+
+<pre><code class="r">set.seed(20)
+randomList&lt;-sample(1:2700,200)
+
+newDigits&lt;-data.frame()
+for (i in seq(1,10)){
+  newDigits&lt;-rbind.data.frame(newDigits,digits[[i]][randomList,1:785])
+}
+
+accuracy&lt;-vector()
+for (i in seq(1, 21, 2)){
+  tm1 &lt;- system.time(
+    {
+      a &lt;-knn(newDigits[,2:785], test[,2:785], newDigits[,1], k = i)
+    })
+  print(c(i,tm1[3]))
+  accuracy&lt;-c(accuracy, confusionMatrix(test[,1], a, justAccuracy = TRUE))
+}
+</code></pre>
+
+<pre><code>##         elapsed 
+##   1.000 173.764 
+##         elapsed 
+##   3.000 174.821 
+##         elapsed 
+##   5.000 175.004 
+##         elapsed 
+##   7.000 172.318 
+##         elapsed 
+##   9.000 172.267 
+##         elapsed 
+##  11.000 172.249 
+##         elapsed 
+##  13.000 172.077 
+##         elapsed 
+##  15.000 172.134 
+##         elapsed 
+##  17.000 172.265 
+##         elapsed 
+##  19.000 172.162 
+##         elapsed 
+##  21.000 172.265
+</code></pre>
+
+<pre><code class="r">q&lt;- cbind.data.frame(seq(1,21,2), accuracy)
+names(q) &lt;- c(&#39;k&#39;, &#39;Accuracy&#39;)
+ggplot(data = q, aes(x = k, y = Accuracy)) + geom_line() + geom_point()
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-11"/></p>
+
+</body>
+
+</html>

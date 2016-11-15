@@ -7,30 +7,26 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(RColorBrewer)
 library(formattable)
-b<-colorRampPalette(brewer.pal(9,"Blues"))(100)
+bluePalette<-colorRampPalette(brewer.pal(9,"Blues"))(100)
 setwd('/home/bendel/R/Hand/')
 hand <-read.csv('train.csv')
 train<-hand[1:30000,]
 test<-hand[30001:42000,]
+source('showImage.R')
 ```
 
 ## Smarter Way
 
 First attempt was to let the algorithm choose the clusters, and then see how well those clusteres performed in categorizing the test data. Now a smarter way - take the controids of the 'clusters' in the training set. We know what the label is for each image, take the average of the images, and use those as the centroids. 
-```{r}
+
+
+```{r, echo = FALSE}
 digits = list()
 
 for (i in seq(1,10)){
   digits[[i]] <- train[which(train$label == i%%10),]
   }
 
-#This was just for me to check that it worked untill here
-#par(mfrow=c(2,5))
-#for (i in seq(1,10)){
-#  for (j in seq(1,3)){
-#  image(matrix(as.integer(digits[[i]][j,2:785]), nrow = 28, byrow=FALSE)[,c(seq(28,1))], xlab = #paste('Cluster number', i, sep = ' '), col = b, axes = FALSE)
-#  }
-#}
 centroid = list()
 for (i in seq(1,10)){
   centroid[[i]] <- sapply(digits[[i]], FUN = mean)
@@ -38,21 +34,22 @@ for (i in seq(1,10)){
 
 par(mfrow=c(2,5))
 for (i in seq(1,10)){
-  image(matrix(as.integer(centroid[[i]][2:785]), nrow = 28, byrow=FALSE)[,c(seq(28,1))], xlab = paste('Centroid number', i, sep = ' '), col = b, axes = FALSE)
+  showImage(centroid[[i]], bluePalette)
 }
 
+#Put them all into one dataframe.
 centroids <-vector()
 for (i in seq(1,10)){
   centroids<-rbind(centroids, centroid[[i]])
 }
 centroids<-data.frame(centroids)
-head(centroids)
+#head(centroids)
 ```
 
 Those are the centroids. Now cluster test data on those centroids.
 
 ```{r}
-set.seed(20)
+set.seed(25)
 clust<-kmeans(test,centroids, iter.max = 20)
 clust$cluster<-clust$cluster%%10
 t<-table(test[,1],clust$cluster)
@@ -64,6 +61,14 @@ names(df)<-c('0','1','2','3','4','5','6','7','8','9')
 df$`True Value`<-seq(0,9)
 df<-df[,c(11,1,2,3,4,5,6,7,8,9,10)]
 formattable(df, list(area(col = c(2,3,4,5,6,7,8,9,10,11) ) ~ color_tile("white", "blue")))
+
+numCorrect <- 0
+for (i in seq(2,11)){
+   numCorrect <- numCorrect + df[i-1,i]
+}
+accuracy <-numCorrect/sum(df)
+print(accuracy)
+
 ```
 
 This looks worse than our previous result. But note that our last result was based on multiple versions of each digit, and here is based on only one version of each digit. Before when we only used one version of each digit some digits weren't represented at all!
@@ -72,6 +77,158 @@ This looks worse than our previous result. But note that our last result was bas
 
 The data is partitioned into 10 subsections, each containing only one digit. Cluster in each subsection to find 4 main shapes within that digit.
 
-``{r}
+```{r, echo = FALSE}
+clust1<-list()
+for(i in seq(1,10)){
+  clust1[[i]] <- kmeans(digits[[i]], 4)
+}  
 
+par(mfrow=c(1,4))
+for (j in seq(1,10)){
+  for (i in seq(1,4)){
+    showImage(clust1[[j]]$centers[i,], bluePalette)
+  }
+}
+
+centroids<-data.frame()
+for (i in seq(1,10)){
+  centroids<-rbind.data.frame(centroids,clust1[[i]]$centers)
+}
+
+
+clust2<-kmeans(test, centroids)
+t<-table(test[,1],clust2$cluster)
+
+tt<-vector()
+for (i in seq(1,10)){
+  tmp<-rowSums(t[,(4*i-3):(4*i)])
+  tt<-cbind(tt,tmp)
+}
+df<-data.frame()
+for (i in seq(1,10)){
+  df<-rbind.data.frame(df,tt[i,])
+}
+names(df)<-c('0','1','2','3','4','5','6','7','8','9')
+df$`True Value`<-seq(0,9)
+df<-df[,c(11,10,1,2,3,4,5,6,7,8,9)]
+formattable(df, list(area(col = c(2,3,4,5,6,7,8,9,10,11) ) ~ color_tile("white", "blue")))
+```
+
+## Accuracy
+```{r, echo = FALSE}
+numCorrect <- 0
+for (i in seq(2,11)){
+   numCorrect <- numCorrect + df[i-1,i]
+}
+accuracy <-numCorrect/sum(df)
+print(accuracy)
+```
+
+##Why Stop Here?
+
+Why stop at four clusters per digit? Let's try ten clusters per digit.
+
+```{R}
+clust3<-list()
+for(i in seq(1,10)){
+  clust3[[i]] <- kmeans(digits[[i]], 10, iter.max = 20)
+}  
+
+par(mfrow=c(2,5))
+for (j in seq(1,10)){
+  for (i in seq(1,10)){
+    showImage(clust3[[j]]$centers[i,], bluePalette)
+  }
+}
+
+centroids1<-data.frame()
+for (i in seq(1,10)){
+  centroids1<-rbind.data.frame(centroids1,clust3[[i]]$centers)
+}
+
+
+clust4<-kmeans(test, centroids1)
+t<-table(test[,1],clust4$cluster)
+#t
+tt<-vector()
+for (i in seq(1,10)){
+  tmp<-rowSums(t[,(10*i-9):(10*i)])
+  tt<-cbind(tt,tmp)
+}
+df<-data.frame()
+for (i in seq(1,10)){
+  df<-rbind.data.frame(df,tt[i,])
+}
+names(df)<-c('0','1','2','3','4','5','6','7','8','9')
+df$`True Value`<-seq(0,9)
+df<-df[,c(11,10,1,2,3,4,5,6,7,8,9)]
+formattable(df, list(area(col = c(2,3,4,5,6,7,8,9,10,11) ) ~ color_tile("white", "blue")))
+```
+
+## Accuracy
+```{r, echo = FALSE}
+numCorrect <- 0
+for (i in seq(2,11)){
+   numCorrect <- numCorrect + df[i-1,i]
+}
+accuracy <-numCorrect/sum(df)
+print(accuracy)
+```
+
+## N - Clusters Per Digit
+
+```{R, eval = FALSE}
+results<-vector()
+kClustersPerDigit<-function(k){
+  clust3<-list()
+  for(i in seq(1,10)){
+    clust3[[i]] <- kmeans(digits[[i]], k, iter.max = 30)
+    }  
+
+  centroids1<-data.frame()
+  for (i in seq(1,10)){
+    centroids1<-rbind.data.frame(centroids1,clust3[[i]]$centers)
+  }
+
+
+  clust4<-kmeans(test, centroids1)
+  t<-table(test[,1],clust4$cluster)
+  tt<-vector()
+  for (i in seq(1,10)){
+    tmp<-rowSums(t[,(k*i-(k-1)):(k*i)])
+    tt<-cbind(tt,tmp)
+  }
+  df<-data.frame()
+  for (i in seq(1,10)){
+    df<-rbind.data.frame(df,tt[i,])
+  }
+  df$`True Value`<-seq(0,9)
+  df<-df[,c(11,10,1,2,3,4,5,6,7,8,9)]
+  names(df)<-c('True Label','0','1','2','3','4','5','6','7','8','9')
+  
+  numCorrect <- 0
+  for (i in seq(2,11)){
+   numCorrect <- numCorrect + df[i-1,i]
+  }
+  
+  accuracy <-numCorrect/sum(df)
+  print(accuracy)
+  return(c(k,accuracy))
+  }
+
+library(parallel)
+set.seed(25)
+listToTry<-c(2,3,4,5,10,15,20,25,30,40,50,60,70,80,90,100)
+#When I tried 100 clusters for each digit I got an error, 'some clusters came up empty'(?).
+mclapply(listToTry[1:15], kClustersPerDigit, mc.cores=4)
+
+```
+
+## Accuracy
+
+```{r, echo = FALSE}
+library(ggplot2)
+p<-read.csv('results.txt', header = FALSE)
+names(p)<- c('Number of Clusters per Digit', 'Accuracy')
+ggplot(data = p, aes(x = `Number of Clusters per Digit`, y = Accuracy)) + geom_line() + geom_point()
 ```
