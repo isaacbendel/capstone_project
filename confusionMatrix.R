@@ -9,7 +9,6 @@ confusionMatrix<-function(realValues, predictedValues, justAccuracy = FALSE){
   names(df)<-c('0','1','2','3','4','5','6','7','8','9')
   df$`True Value`<-seq(0,nrow(t)-1)
   df<-df[,c(11,1,2,3,4,5,6,7,8,9,10)]
-  df
   numCorrect <- 0
   for (i in seq(2,11)){
     numCorrect <- numCorrect + df[i-1,i]
@@ -23,3 +22,5 @@ confusionMatrix<-function(realValues, predictedValues, justAccuracy = FALSE){
     return(formattable(df, list(area(col = c(2,3,4,5,6,7,8,9,10,11) ) ~ color_tile("white", "blue"))))
   }
 }
+
+

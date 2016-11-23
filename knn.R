@@ -117,28 +117,3 @@ ggplot(data = q, aes(x = k, y = Accuracy)) + geom_line() + geom_point()
 
 #' Interestingly enough - for the first time we get better accuracy when k goes from 1 to 2. Also we have broken the 90% accuracy mark for the first time.
 
-#' # Round 5
-#' Let's see how accuracy is affected by how many selections we make from each digit. We will keep k constant at k = 1.
-
-set.seed(20)
-accuracy<-vector()
-for (i in seq(100, 1000,100)) {
-  randomList<-sample(1:2700,i)
-  
-  newDigits<-data.frame()
-
-  for (i in seq(1,10)){
-    newDigits<-rbind.data.frame(newDigits,digits[[i]][randomList,1:785])
-  }
-  
-  tm1 <- system.time(
-    {
-      a <-knn(newDigits[,2:785], test[,2:785], newDigits[,1], k = i)
-    })
-  print(c(i,tm1[3]))
-  accuracy<-c(accuracy, confusionMatrix(test[,1], a, justAccuracy = TRUE))
-}
-beepr::beep(8)
-q<- cbind.data.frame(seq(100,1000,100), accuracy)
-names(q) <- c('Number of samples from each digit', 'Accuracy')
-ggplot(data = q, aes(x = `Number of samples from each digit`, y = Accuracy)) + geom_line() + geom_point()
