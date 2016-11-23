@@ -1,8 +1,0 @@
-Timeline
-
-Until Nov 6
-	- Importing data, figuring out how to visualize the data
-	- Worked on different variations of k-means clustering
-Nov 6 - 9 
-	- More work on k-menas
-	- Different variations of k nearest neighbour algorithm.
