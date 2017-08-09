@@ -1,4 +1,4 @@
-Recognize handwritten digits (Kaggle dataset). Project for Ryerson University Data Analytics program
+# Recognize handwritten digits (Kaggle dataset). Project for Ryerson University Data Analytics program #
 
 Given a few thousand labeled images of handwritten digits - the goal is to develop a method of classfying new images of digits.
 
